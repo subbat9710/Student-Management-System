@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "1A4duwqhqI9z1BXB6YsJJrYpGrXnmKW0wamkwiQDBr5rYfZA7Dpac183uKOGECvK2s2RD94/H54Zaqua8PZqzQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Student\\workspace\\side-projects\\Student Management System\\smsDesktopApp\\smsDesktopApp\\smsDesktopApp.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Student\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.31\\microsoft.netcore.app.host.win-x64.3.1.31.nupkg.sha512"
+  ],
+  "logs": []
+}

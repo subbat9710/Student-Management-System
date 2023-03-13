@@ -1,0 +1,26 @@
+Student Management System
+
+1. Create Account
+      1. Are you a student/Instructor
+      2. Student
+      3. Enter First Name
+      4. Enter Last Name
+      5. Back to Main Menu
+
+2. Login  (Welcome Student/Instructor/Admin)
+3. What you like to do?
+ (For Student)
+    1. See my grades                                   
+ 
+ (For Instructor)
+    1. See Student records
+    2. Course Start Date 
+    3. Studet Progress (grade wise)
+    4. Back To Main Menu
+3. Exit
+
+
+
+
+
+
