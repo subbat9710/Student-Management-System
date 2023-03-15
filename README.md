@@ -2,7 +2,7 @@
 ##### This is a student management system built using .Net, OOP principles, and an MS SQL database. The system allows users to manage student data, including personal information, academic records, and attendance.
 
 ### Installation
-##### To run the application, you will need the following:
+#### To run the application, you will need the following:
 
 * Visual Studio
 * MS SQL Server
