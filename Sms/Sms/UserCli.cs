@@ -179,7 +179,7 @@ namespace Sms
         public void Login()
         {
             Console.Write("Username: ");
-            string username = Console.ReadLine();
+            string username = Console.ReadLine().ToLower().Trim();
             Console.Write("Password: ");
             String password = "";
             ConsoleKeyInfo key;
@@ -399,6 +399,28 @@ namespace Sms
             if (studentInput == "1")
             {
                 ListAllCourses();
+            }
+            if (studentInput == "2")
+            {
+                Console.Write("Enter first name to search for: ");
+                string firstNameSearch = Console.ReadLine();
+                Console.Write("Enter last name to search for: ");
+                string lastNameSearch = Console.ReadLine();
+                IList<Student> students = _newStudentDao.SearchStudentByName(firstNameSearch, lastNameSearch);
+                if (students.Count == 0) 
+                { 
+                    Console.WriteLine("No student found with the given first and last name.");
+                    return; 
+                }
+                else if (students.Count > 1) 
+                { 
+                    Console.WriteLine("Multiple students found with a given first and last name.");
+                    return; 
+                }
+                else
+                {
+                    DisplayStudents(students);
+                }
             }
         }
         private void PrintMenu()
