@@ -327,9 +327,9 @@ namespace Sms
             Console.Write("Enter last name to search for: ");
             string lastNameSearch = Console.ReadLine();
             IList<Student> students = _newStudentDao.SearchStudentByName(firstNameSearch, lastNameSearch);
-            DisplayStudents(students);
-            if(students.Count == 0) { Console.WriteLine("No student found with the given first and last name."); return; }
-            else if (students.Count > 1) { Console.WriteLine("Multiple students found with a given first and last name."); return; }
+            if(students.Count == 0) { Console.WriteLine(); Console.WriteLine("No student found with the given first and last name."); return; }
+            else if (students.Count > 1) { Console.WriteLine(); Console.WriteLine("Multiple students found with a given first and last name."); return; }
+            else { DisplayStudents(students); }
             Student studentToUpdate = students[0];
             Console.Write("Enter student ID: ");
             string studentId = Console.ReadLine();
