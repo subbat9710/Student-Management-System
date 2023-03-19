@@ -14,7 +14,7 @@
 * Update the connection string in the App.config file to match your database credentials.
 * Build and run the application.
 ### Features
-* Login - The system requires users to log in with their credentials before accessing any features. Users can choose to log in as administrators or teachers.
+* Login/Logout - The system requires users to log in with their credentials before accessing any features. Users can choose to log in as administrators or teachers.
 
 1. Students
 * The students section allows users to add, edit, or delete student records. Each student record includes personal information, such as name, address, and phone number, as well as academic records, such as classes and grades.
