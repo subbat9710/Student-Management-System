@@ -200,41 +200,50 @@ namespace Sms
                 LoggedInUser.Username = username;
 
                 User user = _userDao.SelectUserRole(username, password);
-                while (true)
+                if (user != null)
                 {
-                    if (user != null)
+                    if (user.Role == "admin")
                     {
-                        if (user.Role == "admin")
-                        {
-                            Admin();
-                        }
-                        else if (user.Role == "student")
+                        Admin();
+                    }
+                    else if (user.Role == "student")
+                    {
+                        while (true)
                         {
                             Console.WriteLine();
                             Student student = new Student();
                             student = _newStudentDao.GetFirstLastName(username);
                             Console.WriteLine();
                             Console.WriteLine("1) Course details");
-                            Console.Write("2) My Current Grade ");
+                            Console.WriteLine("2) My Current Grade ");
+                            Console.WriteLine("3) Logout");
                             string studentInput = Console.ReadLine().Trim();
                             if (studentInput == "1")
                             {
                                 IList<Course> courses = _courseDao.GetCoursesByUsername(username);
                                 DisplayAllCourse(courses);
                             }
-                            
+                            else if (studentInput == "2")
+                            {
+                                Console.WriteLine("Your current grade is: A+");
+                            }
+                            else if (studentInput == "3")
+                            {
+                                break;
+                            }
                         }
-                        else if (user.Role == "instructor")
-                        {
-                            Console.WriteLine();
-                            Instructor instructor = new Instructor();
-                            instructor = _newInstructorDao.GetFirstLastName(username);
-                            Instructor();
-                        }
-                        else
-                        {
-                            Console.WriteLine("Your role is not assigned!");
-                        }
+
+                    }
+                    else if (user.Role == "instructor")
+                    {
+                        Console.WriteLine();
+                        Instructor instructor = new Instructor();
+                        instructor = _newInstructorDao.GetFirstLastName(username);
+                        Instructor();
+                    }
+                    else
+                    {
+                        Console.WriteLine("Your role is not assigned!");
                     }
                 }
             }
@@ -368,58 +377,71 @@ namespace Sms
         }
         private void Admin()
         {
-            Console.WriteLine();
-            Console.WriteLine("You Logged in as admin!");
-            Console.WriteLine();
-            Console.WriteLine("1) Add new instructor");
-            Console.WriteLine("2) Add new course");
-            Console.WriteLine("3) Add new student");
-            Console.WriteLine("4) View students");
-            Console.WriteLine("5) View instructor");
-            Console.WriteLine("6) Course details");
-            Console.WriteLine("7) Update student");
-            Console.Write("8) Delete Student Record ");
-            string adminInput = Console.ReadLine();
-            if (adminInput == "1") { InstructorDetails(); }
-            else if (adminInput == "2") { AddCourseDetails(); }
-            else if (adminInput == "3") { AddStudentDetails(); }
-            else if (adminInput == "4") { ListAllstudents(); }
-            else if (adminInput == "5") { ListAllInstructor(); }
-            else if (adminInput == "6") { ListAllCourses(); }
-            else if (adminInput == "7") { StudentSearch(); }
-            else if (adminInput == "8") { DeleteStudent(); }
-            else { Console.WriteLine("Invalid Input!"); }
+            while (true)
+            {
+                Console.WriteLine();
+                Console.WriteLine("You Logged in as admin!");
+                Console.WriteLine();
+                Console.WriteLine("1) Add new instructor");
+                Console.WriteLine("2) Add new course");
+                Console.WriteLine("3) Add new student");
+                Console.WriteLine("4) View students");
+                Console.WriteLine("5) View instructor");
+                Console.WriteLine("6) Course details");
+                Console.WriteLine("7) Update student");
+                Console.WriteLine("8) Delete Student Record ");
+                Console.Write("9) Logout ");
+                string adminInput = Console.ReadLine();
+                if (adminInput == "1") { InstructorDetails(); }
+                else if (adminInput == "2") { AddCourseDetails(); }
+                else if (adminInput == "3") { AddStudentDetails(); }
+                else if (adminInput == "4") { ListAllstudents(); }
+                else if (adminInput == "5") { ListAllInstructor(); }
+                else if (adminInput == "6") { ListAllCourses(); }
+                else if (adminInput == "7") { StudentSearch(); }
+                else if (adminInput == "8") { DeleteStudent(); }
+                else if (adminInput == "9") { break; }
+                else { Console.WriteLine("Invalid Input!"); }
+            }
         }
         private void Instructor()
         {
-            Console.WriteLine();
-            Console.WriteLine("1) Course details");
-            Console.WriteLine("2) Grade Student");
-            string studentInput = Console.ReadLine().Trim();
-            if (studentInput == "1")
+            while (true)
             {
-                ListAllCourses();
-            }
-            if (studentInput == "2")
-            {
-                Console.Write("Enter first name to search for: ");
-                string firstNameSearch = Console.ReadLine();
-                Console.Write("Enter last name to search for: ");
-                string lastNameSearch = Console.ReadLine();
-                IList<Student> students = _newStudentDao.SearchStudentByName(firstNameSearch, lastNameSearch);
-                if (students.Count == 0) 
-                { 
-                    Console.WriteLine("No student found with the given first and last name.");
-                    return; 
-                }
-                else if (students.Count > 1) 
-                { 
-                    Console.WriteLine("Multiple students found with a given first and last name.");
-                    return; 
-                }
-                else
+                Console.WriteLine();
+                Console.WriteLine("1) Course details");
+                Console.WriteLine("2) Grade Student");
+                Console.WriteLine("3) Logout");
+                string instructorInput = Console.ReadLine().Trim();
+                if (instructorInput == "1")
                 {
-                    DisplayStudents(students);
+                    ListAllCourses();
+                }
+                else if (instructorInput == "2")
+                {
+                    Console.Write("Enter first name to search for: ");
+                    string firstNameSearch = Console.ReadLine();
+                    Console.Write("Enter last name to search for: ");
+                    string lastNameSearch = Console.ReadLine();
+                    IList<Student> students = _newStudentDao.SearchStudentByName(firstNameSearch, lastNameSearch);
+                    if (students.Count == 0)
+                    {
+                        Console.WriteLine("No student found with the given first and last name.");
+                        return;
+                    }
+                    else if (students.Count > 1)
+                    {
+                        Console.WriteLine("Multiple students found with a given first and last name.");
+                        return;
+                    }
+                    else
+                    {
+                        DisplayStudents(students);
+                    }
+                }
+                else if (instructorInput == "3")
+                {
+                    break;
                 }
             }
         }
