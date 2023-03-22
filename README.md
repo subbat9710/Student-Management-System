@@ -4,7 +4,7 @@
 ### Installation
 #### To run the application, you will need the following:
 
-* Visual Studio
+* MS Visual Studio
 * MS SQL Server
 * .NET Framework
 ### Setup
