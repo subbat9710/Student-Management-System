@@ -1,3 +1,4 @@
+-- Create the database
 USE master;
 GO
 
@@ -11,50 +12,67 @@ GO
 
 BEGIN TRANSACTION;
 
-CREATE TABLE users_sms (
-  id                INT IDENTITY PRIMARY KEY,
-  username          VARCHAR(255) NOT NULL UNIQUE,
-  password          VARCHAR(48) NOT NULL,
-  salt              VARCHAR(256) NOT NULL,
-  role              VARCHAR(50) NOT NULL
+
+-- Create the USERS table
+CREATE TABLE USERS_SMS (
+  user_id INT PRIMARY KEY IDENTITY,
+  username VARCHAR(50) UNIQUE NOT NULL,
+  password VARCHAR(50) NOT NULL,
+  salt VARCHAR(256) NOT NULL,
+  role VARCHAR(20) NOT NULL,
 );
 
-CREATE TABLE student_sms (
-  student_id        INT IDENTITY PRIMARY KEY,
-  first_name        VARCHAR(50) NOT NULL,
-  last_name         VARCHAR(100) NOT NULL,
-  date_of_birth     DATE NOT NULL,
-  user_id           INT NOT NULL,
-  completed_hours   INT NOT NULL DEFAULT 0,
-  course_id         INT NOT NULL,
-
-  CONSTRAINT FK_student_user FOREIGN KEY (user_id) REFERENCES users_sms(id),
- 
+-- Create the STUDENTS table
+CREATE TABLE STUDENTS_SMS (
+  student_id INT PRIMARY KEY IDENTITY,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  date_of_birth DATE NOT NULL,
+  user_id INT NOT NULL,
+  CONSTRAINT FK_student_user FOREIGN KEY (user_id) REFERENCES USERS_SMS(user_id)
 );
 
-CREATE TABLE instructor_sms (
-  instructor_id     INT IDENTITY PRIMARY KEY,
-  first_name        VARCHAR(50) NOT NULL,
-  last_name         VARCHAR(100) NOT NULL,
-  date_of_birth     DATE NOT NULL,
-  user_id           INT NOT NULL
-
-  CONSTRAINT FK_instructor_user FOREIGN KEY (user_id) REFERENCES users_sms(id),
- 
+-- Create the COURSES table
+CREATE TABLE COURSES_SMS (
+  course_id INT PRIMARY KEY IDENTITY,
+  course_name VARCHAR(50) NOT NULL,
+  start_date DATE NOT NULL,
+  status VARCHAR(30),
+  instructor_id INT NOT NULL,
+  description VARCHAR(200),
+  total_hours int NOT NULL
 );
 
-CREATE TABLE course_sms (
-  course_id         INT IDENTITY PRIMARY KEY,
-  name              VARCHAR(80) NOT NULL,
-  start_date        DATE,
-  status            VARCHAR(50),
-  total_hours       INT NOT NULL,
-  learn_hour        INT,
-  instructor_id     INT NOT NULL,
-  description       VARCHAR(255),
-
-  CONSTRAINT FK_course_instructor FOREIGN KEY (instructor_id) REFERENCES instructor_sms(instructor_id)
+-- Create the INSTRUCTORS table
+CREATE TABLE INSTRUCTORS_SMS (
+  instructor_id INT PRIMARY KEY IDENTITY,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  date_of_birth DATE NOT NULL,
+  user_id INT NOT NULL,
+  CONSTRAINT FK_instructor_user FOREIGN KEY (user_id) REFERENCES USERS_SMS(user_id)
 );
 
-ALTER TABLE student_sms ADD  CONSTRAINT FK_student_course FOREIGN KEY (course_id) REFERENCES course_sms(course_id)
+-- Create the GRADES table
+CREATE TABLE GRADES_SMS (
+  grade_id INT PRIMARY KEY IDENTITY,
+  student_id INT NOT NULL,
+  course_id INT NOT NULL,
+  grade INT NOT NULL,
+  assignment_name VARCHAR(50),
+  CONSTRAINT FK_student_grade FOREIGN KEY (student_id) REFERENCES STUDENTS_SMS(student_id),
+  CONSTRAINT FK_grade_course FOREIGN KEY (course_id) REFERENCES COURSES_SMS(course_id)
+);
+
+-- Create the ATTENDANCE table
+CREATE TABLE ATTENDANCE_SMS (
+  attendance_id INT PRIMARY KEY IDENTITY,
+  student_id INT NOT NULL,
+  course_id INT NOT NULL,
+  date DATE NOT NULL,
+  status VARCHAR(10) NOT NULL,
+  CONSTRAINT FK_attendance_student FOREIGN KEY (student_id) REFERENCES STUDENTS_SMS(student_id),
+  CONSTRAINT FK_attendance_course FOREIGN KEY (course_id) REFERENCES COURSES_SMS(course_id)
+);
+ALTER TABLE COURSES_SMS ADD CONSTRAINT FK_course_instructor FOREIGN KEY (instructor_id) REFERENCES INSTRUCTORS_SMS(instructor_id)
 COMMIT;
