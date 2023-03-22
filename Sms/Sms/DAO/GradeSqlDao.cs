@@ -39,7 +39,7 @@ namespace Sms.DAO
                     grade.GradeId = newGradeId;
                 }
             }
-            catch (Exception e) { Console.WriteLine($"Error inserting data: {e.Message}"); }
+            catch (Exception e) { Console.WriteLine($"Error inserting student grade data: {e.Message}"); }
             return grade;
         }
     }
