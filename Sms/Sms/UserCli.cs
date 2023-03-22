@@ -15,13 +15,15 @@ namespace Sms
         private readonly IStudentDao _newStudentDao;
         private readonly IInstructorDao _newInstructorDao;
         private readonly ICourseDao _courseDao;
+        private readonly IGradeDao _gradeDao;
 
-        public UserCli(IUserDao userDao, IStudentDao newStudentDao, IInstructorDao instructorDao, ICourseDao courseDao)
+        public UserCli(IUserDao userDao, IStudentDao newStudentDao, IInstructorDao instructorDao, ICourseDao courseDao, IGradeDao gradeDao)
         {
             _userDao = userDao;
             _newStudentDao = newStudentDao;
             _newInstructorDao = instructorDao;
             _courseDao = courseDao;
+            _gradeDao = gradeDao;
         }
         private User LoggedInUser { get; set; }
         public void Run()
@@ -290,21 +292,15 @@ namespace Sms
             string lastName = Console.ReadLine();
             Console.Write("Enter your date of birth: ");
             string dateOfBirth = Console.ReadLine();
-            Console.Write("Enter course Id: ");
-            string courseId = Console.ReadLine();
             Console.Write("Enter user id: ");
             string userId = Console.ReadLine();
-            Console.Write("Completed Hours: ");
-            string completedHours = Console.ReadLine();
             Student newUser = new Student
             {
                 FirstName = firstName,
                 LastName = lastName,
                 DateOfBirth = DateTime.Parse(dateOfBirth),
-                CourseId = int.Parse(courseId),
-                UserId = int.Parse(userId),
+                UserId = int.Parse(userId)
              //   UserId = user.Id,  //PK from user table storing to FK student table
-                CompletedHours = int.Parse(completedHours)
             };
             newUser = _newStudentDao.createProfileDetails(newUser);
             Console.WriteLine($"\n*** {newUser.FirstName} {newUser.LastName} created ***");
@@ -436,7 +432,8 @@ namespace Sms
                     }
                     else
                     {
-                        DisplayStudents(students);
+                        Console.WriteLine();
+                        GradeStudent();
                     }
                 }
                 else if (instructorInput == "3")
@@ -444,6 +441,26 @@ namespace Sms
                     break;
                 }
             }
+        }
+        private void GradeStudent()
+        {
+            Console.Write("1) Enter Student Id: ");
+            string studentId = Console.ReadLine();
+            Console.Write("2) Enter Course Id: ");
+            string courseId = Console.ReadLine();
+            Console.Write("3) Grade Student: ");
+            string gradeStd = Console.ReadLine();
+            Console.WriteLine("4) Assignment Name: ");
+            string assignment = Console.ReadLine();
+            Grades newGrade = new Grades()
+            {
+                StudentId = int.Parse(studentId),
+                CourseId = int.Parse(courseId),
+                Grade = int.Parse(gradeStd),
+                AssignmentName = assignment
+            };
+            newGrade = _gradeDao.GetGrade(newGrade);
+            Console.WriteLine($"\n*** {newGrade.Grade} assigned ***");
         }
         private void PrintMenu()
         {

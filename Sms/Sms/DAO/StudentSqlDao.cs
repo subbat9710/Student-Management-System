@@ -10,13 +10,13 @@ namespace Sms.DAO
     public class StudentSqlDao : IStudentDao
     {
         private readonly string _connectionString;
-        
+
         public StudentSqlDao(string connString)
         {
             _connectionString = connString;
         }
 
-        public Student createProfileDetails(Student student) 
+        public Student createProfileDetails(Student student)
         {
             int newStudentId = 0;
 
@@ -27,9 +27,9 @@ namespace Sms.DAO
                     User user = new User();
                     connection.Open();
                     SqlCommand cmd = new SqlCommand();
-                    string sql = "INSERT INTO student_sms (first_name, last_name, date_of_birth, course_id, user_id, completed_hours) " +
+                    string sql = "INSERT INTO STUDENTS_SMS (first_name, last_name, date_of_birth, user_id) " +
                         "OUTPUT INSERTED.student_id " +
-                        "VALUES(@firstName, @lastName, @dob, @courseid, @user_id, @completed_hours); " +
+                        "VALUES(@firstName, @lastName, @dob, @user_id); " +
                         "SELECT SCOPE_IDENTITY();";
 
                     cmd.CommandText = sql;
@@ -37,15 +37,13 @@ namespace Sms.DAO
                     cmd.Parameters.AddWithValue("@firstName", student.FirstName);
                     cmd.Parameters.AddWithValue("@lastName", student.LastName);
                     cmd.Parameters.AddWithValue("@dob", student.DateOfBirth);
-                    cmd.Parameters.AddWithValue("@courseid", student.CourseId);
                     cmd.Parameters.AddWithValue("@user_id", student.UserId);
-                    cmd.Parameters.AddWithValue("@completed_hours", student.CompletedHours);
 
                     newStudentId = Convert.ToInt32(cmd.ExecuteScalar());
                     student.StudentId = newStudentId;
                 }
             }
-            catch (Exception e){ Console.WriteLine($"Error inserting data:{e.Message}"); }
+            catch (Exception e) { Console.WriteLine($"Error inserting data:{e.Message}"); }
             return student;
         }
         public IList<Student> GetAllStudent()
@@ -54,11 +52,11 @@ namespace Sms.DAO
 
             try
             {
-                using(SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     connection.Open();
                     SqlCommand cmd = new SqlCommand();
-                    string sql = "SELECT * FROM student_sms;";
+                    string sql = "SELECT * FROM STUDENTS_SMS;";
                     cmd.CommandText = sql;
                     cmd.Connection = connection;
 
@@ -84,7 +82,7 @@ namespace Sms.DAO
                 {
                     connection.Open();
                     SqlCommand cmd = new SqlCommand();
-                    string sql = "SELECT s.first_name, s.last_name FROM users_sms u JOIN student_sms s ON u.id = s.user_id WHERE u.username = @username;";
+                    string sql = "SELECT s.first_name, s.last_name FROM users_sms u JOIN STUDENTS_SMS s ON u.user_id = s.user_id WHERE u.username = @username;";
                     cmd.CommandText = sql;
                     cmd.Parameters.AddWithValue("@username", username);
                     cmd.Connection = connection;
@@ -99,7 +97,7 @@ namespace Sms.DAO
                     }
                 }
             }
-            catch(Exception e) { Console.WriteLine($"An error occurred while retrieving the student's name: {e.Message}"); }
+            catch (Exception e) { Console.WriteLine($"An error occurred while retrieving the student's name: {e.Message}"); }
             return student;
         }
         public IList<Student> SearchStudentByName(string firstNameSearch, string lastNmaeSearch)
@@ -107,11 +105,11 @@ namespace Sms.DAO
             IList<Student> result = new List<Student>();
             try
             {
-                using(SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     connection.Open();
                     SqlCommand command = new SqlCommand();
-                    string sql = "SELECT * FROM student_sms WHERE first_name LIKE '%' + @first_name + '%' AND last_name LIKE '%' + @last_name + '%';";
+                    string sql = "SELECT * FROM STUDENTS_SMS WHERE first_name LIKE '%' + @first_name + '%' AND last_name LIKE '%' + @last_name + '%';";
                     command.CommandText = sql;
                     command.Connection = connection;
                     command.Parameters.AddWithValue("@first_name", firstNameSearch);
@@ -126,18 +124,19 @@ namespace Sms.DAO
                         result.Add(tempStd);
                     }
                 }
-            } catch(Exception e) { Console.WriteLine(e.Message); }
+            }
+            catch (Exception e) { Console.WriteLine(e.Message); }
             return result;
         }
         public bool UpdateStudent(Student updateStudent)
         {
             try
             {
-                using(SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     connection.Open();
                     SqlCommand cmd = new SqlCommand();
-                    string sql = "UPDATE student_sms SET first_name = @first_name, last_name = @last_name WHERE student_id = @student_id";
+                    string sql = "UPDATE STUDENTS_SMS SET first_name = @first_name, last_name = @last_name WHERE student_id = @student_id";
                     cmd.CommandText = sql;
                     cmd.Connection = connection;
                     cmd.Parameters.AddWithValue("@first_name", updateStudent.FirstName);
@@ -146,18 +145,19 @@ namespace Sms.DAO
 
                     return cmd.ExecuteNonQuery() == 1;
                 }
-            }catch(Exception e) { Console.WriteLine($"Error Updating Student: {e.Message}"); }
+            }
+            catch (Exception e) { Console.WriteLine($"Error Updating Student: {e.Message}"); }
             return false;
         }
         public bool RemoveStudent(int studentId)
-        { 
+        {
             try
             {
-                using(SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     connection.Open();
                     SqlCommand cmd = new SqlCommand();
-                    string sql = "DELETE FROM student_sms WHERE student_id = @student_id;";
+                    string sql = "DELETE FROM STUDENTS_SMS WHERE student_id = @student_id;";
                     cmd.CommandText = sql;
                     cmd.Connection = connection;
                     cmd.Parameters.AddWithValue("@student_id", studentId);
@@ -165,7 +165,8 @@ namespace Sms.DAO
                     return cmd.ExecuteNonQuery() == 1;
                 }
 
-            }catch(Exception e) { Console.WriteLine("Error deleting student record:", e.Message); }
+            }
+            catch (Exception e) { Console.WriteLine("Error deleting student record:", e.Message); }
             return false;
         }
         private Student CreateStudentFromReader(SqlDataReader reader)
@@ -176,8 +177,6 @@ namespace Sms.DAO
             student.LastName = Convert.ToString(reader["last_name"]);
             student.DateOfBirth = Convert.ToDateTime(reader["date_of_birth"]);
             student.UserId = Convert.ToInt32(reader["user_id"]);
-            student.CourseId = Convert.ToInt32(reader["course_id"]);
-            student.CompletedHours = Convert.ToInt32(reader["completed_hours"]);
 
             return student;
         }

@@ -20,13 +20,13 @@ namespace Sms.DAO
 
             try
             {
-                using(SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     connection.Open();
 
                     SqlCommand cmd = new SqlCommand();
 
-                    string sql = "INSERT INTO instructor_sms (first_name, last_name, date_of_birth, user_id) " +
+                    string sql = "INSERT INTO INSTRUCTORS_SMS (first_name, last_name, date_of_birth, user_id) " +
                                "OUTPUT INSERTED.instructor_id " +
                                "VALUES (@firstName, @lastName, @dob, @user_id)";
 
@@ -53,7 +53,7 @@ namespace Sms.DAO
                 {
                     connection.Open();
                     SqlCommand cmd = new SqlCommand();
-                    string sql = "SELECT s.first_name, s.last_name FROM users_sms u JOIN instructor_sms s ON u.id = s.user_id WHERE u.username = @username;";
+                    string sql = "SELECT s.first_name, s.last_name FROM users_sms u JOIN INSTRUCTORS_SMS s ON u.user_id = s.user_id WHERE u.username = @username;";
                     cmd.CommandText = sql;
                     cmd.Parameters.AddWithValue("@username", username);
                     cmd.Connection = connection;
@@ -76,11 +76,11 @@ namespace Sms.DAO
             IList<Instructor> result = new List<Instructor>();
             try
             {
-                using(SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     connection.Open();
                     SqlCommand cmd = new SqlCommand();
-                    string sql = "SELECT * FROM instructor_sms;";
+                    string sql = "SELECT * FROM INSTRUCTORS_SMS;";
                     cmd.CommandText = sql;
                     cmd.Connection = connection;
 
@@ -93,7 +93,8 @@ namespace Sms.DAO
                         result.Add(instructor);
                     }
                 }
-            }catch(Exception e) { Console.WriteLine(e.Message); }
+            }
+            catch (Exception e) { Console.WriteLine(e.Message); }
             return result;
         }
         private Instructor CreateInstructorFromReader(SqlDataReader reader)

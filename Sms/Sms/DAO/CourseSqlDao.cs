@@ -26,7 +26,7 @@ namespace Sms.DAO
                 {
                     connection.Open();
                     SqlCommand cmd = new SqlCommand();
-                    string sql = "INSERT INTO course_sms (name, start_date, status, total_hours, instructor_id, description) " +
+                    string sql = "INSERT INTO COURSES_SMS (course_name, start_date, status, total_hours, instructor_id, description) " +
                         "OUTPUT INSERTED.course_id " +
                         "VALUES(@name, @start_date, @status, @total_hours, @instructor_id, @description);";
                     cmd.CommandText = sql;
@@ -55,9 +55,9 @@ namespace Sms.DAO
                     connection.Open();
 
                     SqlCommand cmd = new SqlCommand();
-                    string sql = "SELECT c.status, s.course FROM course_sms c " +
-                        "JOIN student_sms s ON s.course = c.name " +
-                        "JOIN users_sms u ON u.id = s.user_id " +
+                    string sql = "SELECT c.status, s.course FROM COURSES_SMS c " +
+                        "JOIN STUDENTS_SMS s ON s.course = c.course_name " +
+                        "JOIN users_sms u ON u.user_id = s.user_id " +
                         "WHERE u.username = @username";
 
                     cmd.CommandText = sql;
@@ -71,7 +71,7 @@ namespace Sms.DAO
                         string status = reader.GetString(0);
                         string course = reader.GetString(1);
 
-                        if(status != null && course != null)
+                        if (status != null && course != null)
                         {
                             Console.WriteLine($" {course}: {status}!");
                         }
@@ -90,11 +90,11 @@ namespace Sms.DAO
             IList<Course> result = new List<Course>();
             try
             {
-                using(SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     connection.Open();
                     SqlCommand cmd = new SqlCommand();
-                    string sql = "SELECT * FROM course_sms;";
+                    string sql = "SELECT * FROM COURSES_SMS;";
                     cmd.CommandText = sql;
                     cmd.Connection = connection;
 
@@ -107,7 +107,8 @@ namespace Sms.DAO
                         result.Add(course);
                     }
                 }
-            }catch(Exception e) { Console.WriteLine(e.Message); }
+            }
+            catch (Exception e) { Console.WriteLine(e.Message); }
             return result;
         }
         public IList<Course> GetCoursesByUsername(string username)
@@ -115,13 +116,13 @@ namespace Sms.DAO
             IList<Course> result = new List<Course>();
             try
             {
-                using(SqlConnection connection = new SqlConnection(_connectionString))
+                using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
                     connection.Open();
                     SqlCommand cmd = new SqlCommand();
-                    string sql = "SELECT c.name, c.start_date, c.status, c.total_hours, c.description, instructor_id FROM course_sms c " +
-                        "JOIN student_sms s ON c.course_id = s.course_id " +
-                        "JOIN users_sms u ON u.id = s.user_id " +
+                    string sql = "SELECT c.course_name, c.start_date, c.status, c.total_hours, c.description, instructor_id FROM COURSES_SMS c " +
+                        "JOIN STUDENTS_SMS s ON c.course_id = s.course_id " +
+                        "JOIN users_sms u ON u.user_id = s.user_id " +
                         "WHERE u.username = @username;";
                     cmd.CommandText = sql;
                     cmd.Parameters.AddWithValue("@username", username);
@@ -135,13 +136,14 @@ namespace Sms.DAO
                         result.Add(tempCourse);
                     }
                 }
-            }catch(Exception e) { Console.WriteLine("Error loading course details: ", e.Message); }
+            }
+            catch (Exception e) { Console.WriteLine("Error loading course details: ", e.Message); }
             return result;
         }
         private Course CreateCourseFromReader(SqlDataReader reader)
         {
             Course temp = new Course();
-            temp.CourseName = Convert.ToString(reader["name"]);
+            temp.CourseName = Convert.ToString(reader["course_name"]);
             temp.StartDate = Convert.ToDateTime(reader["start_date"]);
             temp.Status = Convert.ToString(reader["status"]);
             temp.TotalHours = Convert.ToInt32(reader["total_hours"]);
