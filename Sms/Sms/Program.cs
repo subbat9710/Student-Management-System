@@ -22,8 +22,9 @@ namespace Sms
             IInstructorDao instructorDao = new InstructorSqlDao(connectionString);
             ICourseDao courseDao = new CourseSqlDao(connectionString);
             IGradeDao gradeDao = new GradeSqlDao(connectionString);
+            IAttendanceDao attendanceDao = new AttendanceSqlDao(connectionString);
 
-            UserCli application = new UserCli(userDao, studentDao, instructorDao, courseDao, gradeDao);
+            UserCli application = new UserCli(userDao, studentDao, instructorDao, courseDao, gradeDao, attendanceDao);
             application.Run();
         }
     }

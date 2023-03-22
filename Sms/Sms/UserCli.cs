@@ -16,14 +16,16 @@ namespace Sms
         private readonly IInstructorDao _newInstructorDao;
         private readonly ICourseDao _courseDao;
         private readonly IGradeDao _gradeDao;
+        private readonly IAttendanceDao _attendanceDao;
 
-        public UserCli(IUserDao userDao, IStudentDao newStudentDao, IInstructorDao instructorDao, ICourseDao courseDao, IGradeDao gradeDao)
+        public UserCli(IUserDao userDao, IStudentDao newStudentDao, IInstructorDao instructorDao, ICourseDao courseDao, IGradeDao gradeDao, IAttendanceDao attendanceDao)
         {
             _userDao = userDao;
             _newStudentDao = newStudentDao;
             _newInstructorDao = instructorDao;
             _courseDao = courseDao;
             _gradeDao = gradeDao;
+            _attendanceDao = attendanceDao;
         }
         private User LoggedInUser { get; set; }
         public void Run()
@@ -407,7 +409,8 @@ namespace Sms
                 Console.WriteLine();
                 Console.WriteLine("1) Course details");
                 Console.WriteLine("2) Grade Student");
-                Console.WriteLine("3) Logout");
+                Console.WriteLine("3) Attendance");
+                Console.WriteLine("4) Logout");
                 string instructorInput = Console.ReadLine().Trim();
                 if (instructorInput == "1")
                 {
@@ -420,6 +423,7 @@ namespace Sms
                     Console.Write("Enter last name to search for: ");
                     string lastNameSearch = Console.ReadLine();
                     IList<Student> students = _newStudentDao.SearchStudentByName(firstNameSearch, lastNameSearch);
+                    DisplayStudents(students);
                     if (students.Count == 0)
                     {
                         Console.WriteLine("No student found with the given first and last name.");
@@ -438,6 +442,10 @@ namespace Sms
                 }
                 else if (instructorInput == "3")
                 {
+                    GetAttendance();
+                }
+                else if (instructorInput == "4")
+                {
                     break;
                 }
             }
@@ -450,7 +458,7 @@ namespace Sms
             string courseId = Console.ReadLine();
             Console.Write("3) Grade Student: ");
             string gradeStd = Console.ReadLine();
-            Console.WriteLine("4) Assignment Name: ");
+            Console.Write("4) Assignment Name: ");
             string assignment = Console.ReadLine();
             Grades newGrade = new Grades()
             {
@@ -461,6 +469,24 @@ namespace Sms
             };
             newGrade = _gradeDao.GetGrade(newGrade);
             Console.WriteLine($"\n*** {newGrade.Grade} assigned ***");
+        }
+        private void GetAttendance()
+        {
+            Console.Write("1) Enter Student Id: ");
+            string studentId = Console.ReadLine();
+            Console.Write("2) Enter Course Id: ");
+            string courseId = Console.ReadLine();
+            Console.Write("3) Is Present/Absent: ");
+            string status = Console.ReadLine();
+            Attendance getAttendance = new Attendance()
+            {
+                StudentId = int.Parse(studentId),
+                CourseId = int.Parse(courseId),
+                Date = DateTime.Now,
+                Status = status
+            };
+            getAttendance = _attendanceDao.GetAttendance(getAttendance);
+            Console.WriteLine("Attendence Created");
         }
         private void PrintMenu()
         {
