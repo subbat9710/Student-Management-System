@@ -141,6 +141,35 @@ namespace Sms.DAO
             catch (Exception e) { Console.WriteLine("Error loading course details: ", e.Message); }
             return result;
         }
+
+        public IList<Course> GetCoursesByUsernameInstructor(string username)
+        {
+            IList<Course> result = new List<Course>();
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    connection.Open();
+                    SqlCommand cmd = new SqlCommand();
+                    string sql = "SELECT c.course_name, c.start_date, c.status, c.total_hours, c.description, c.instructor_id " +
+                        "FROM COURSES_SMS c JOIN INSTRUCTORS_SMS i on i.instructor_id = c.instructor_id " +
+                        "JOIN users_sms u ON u.user_id = i.user_id WHERE u.username = @username;";
+                    cmd.CommandText = sql;
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Connection = connection;
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Course tempCourse = new Course();
+                        tempCourse = CreateCourseFromReader(reader);
+                        result.Add(tempCourse);
+                    }
+                }
+            }
+            catch (Exception e) { Console.WriteLine("Error loading course details: ", e.Message); }
+            return result;
+        }
         private Course CreateCourseFromReader(SqlDataReader reader)
         {
             Course temp = new Course();

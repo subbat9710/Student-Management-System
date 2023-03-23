@@ -229,7 +229,8 @@ namespace Sms
                             }
                             else if (studentInput == "2")
                             {
-                                Console.WriteLine("Your current grade is: A+");
+                                Console.WriteLine();
+                                Grades grades = _gradeDao.StudentGrade(username);
                             }
                             else if (studentInput == "3")
                             {
@@ -243,7 +244,53 @@ namespace Sms
                         Console.WriteLine();
                         Instructor instructor = new Instructor();
                         instructor = _newInstructorDao.GetFirstLastName(username);
-                        Instructor();
+
+                        while (true)
+                        {
+                            Console.WriteLine();
+                            Console.WriteLine("1) Course details");
+                            Console.WriteLine("2) Grade Student");
+                            Console.WriteLine("3) Attendance");
+                            Console.WriteLine("4) Logout");
+                            string instructorInput = Console.ReadLine().Trim();
+                            if (instructorInput == "1")
+                            {
+                                IList<Course> courses = _courseDao.GetCoursesByUsernameInstructor(username);
+                                DisplayAllCourse(courses);
+                            }
+                            else if (instructorInput == "2")
+                            {
+                                Console.Write("Enter first name to search for: ");
+                                string firstNameSearch = Console.ReadLine();
+                                Console.Write("Enter last name to search for: ");
+                                string lastNameSearch = Console.ReadLine();
+                                IList<Student> students = _newStudentDao.SearchStudentByName(firstNameSearch, lastNameSearch);
+                                DisplayStudents(students);
+                                if (students.Count == 0)
+                                {
+                                    Console.WriteLine("No student found with the given first and last name.");
+                                    return;
+                                }
+                                else if (students.Count > 1)
+                                {
+                                    Console.WriteLine("Multiple students found with a given first and last name.");
+                                    return;
+                                }
+                                else
+                                {
+                                    Console.WriteLine();
+                                    GradeStudent();
+                                }
+                            }
+                            else if (instructorInput == "3")
+                            {
+                                GetAttendance();
+                            }
+                            else if (instructorInput == "4")
+                            {
+                                break;
+                            }
+                        }
                     }
                     else
                     {
@@ -284,7 +331,7 @@ namespace Sms
                 Description = courseDescription
             };
             newCourse = _courseDao.GetCourse(newCourse);
-            Console.WriteLine($"\n*** {newCourse.CourseName} created ***");
+            Console.WriteLine($"\n*** {newCourse.CourseName} course created ***");
         }
         private void AddStudentDetails()
         {
@@ -402,54 +449,7 @@ namespace Sms
                 else { Console.WriteLine("Invalid Input!"); }
             }
         }
-        private void Instructor()
-        {
-            while (true)
-            {
-                Console.WriteLine();
-                Console.WriteLine("1) Course details");
-                Console.WriteLine("2) Grade Student");
-                Console.WriteLine("3) Attendance");
-                Console.WriteLine("4) Logout");
-                string instructorInput = Console.ReadLine().Trim();
-                if (instructorInput == "1")
-                {
-                    ListAllCourses();
-                }
-                else if (instructorInput == "2")
-                {
-                    Console.Write("Enter first name to search for: ");
-                    string firstNameSearch = Console.ReadLine();
-                    Console.Write("Enter last name to search for: ");
-                    string lastNameSearch = Console.ReadLine();
-                    IList<Student> students = _newStudentDao.SearchStudentByName(firstNameSearch, lastNameSearch);
-                    DisplayStudents(students);
-                    if (students.Count == 0)
-                    {
-                        Console.WriteLine("No student found with the given first and last name.");
-                        return;
-                    }
-                    else if (students.Count > 1)
-                    {
-                        Console.WriteLine("Multiple students found with a given first and last name.");
-                        return;
-                    }
-                    else
-                    {
-                        Console.WriteLine();
-                        GradeStudent();
-                    }
-                }
-                else if (instructorInput == "3")
-                {
-                    GetAttendance();
-                }
-                else if (instructorInput == "4")
-                {
-                    break;
-                }
-            }
-        }
+
         private void GradeStudent()
         {
             Console.Write("1) Enter Student Id: ");
@@ -488,6 +488,7 @@ namespace Sms
             getAttendance = _attendanceDao.GetAttendance(getAttendance);
             Console.WriteLine("Attendence Created");
         }
+
         private void PrintMenu()
         {
             Console.WriteLine();

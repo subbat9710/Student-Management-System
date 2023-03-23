@@ -8,5 +8,6 @@ namespace Sms.DAO
     internal interface IGradeDao
     {
         Grades GetGrade(Grades grade);
+        Grades StudentGrade(string username);
     }
 }

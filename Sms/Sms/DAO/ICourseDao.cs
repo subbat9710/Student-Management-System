@@ -11,6 +11,7 @@ namespace Sms.DAO
         Course CourseStatus(string username);
         IList<Course> GetAllCourse();
         IList<Course> GetCoursesByUsername(string username);
+        IList<Course> GetCoursesByUsernameInstructor(string username);
 
     }
 }
