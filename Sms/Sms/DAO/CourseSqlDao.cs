@@ -121,8 +121,8 @@ namespace Sms.DAO
                     connection.Open();
                     SqlCommand cmd = new SqlCommand();
                     string sql = "SELECT c.course_name, c.start_date, c.status, c.total_hours, c.description, c.instructor_id FROM COURSES_SMS c " +
-                        "JOIN GRADES_SMS g ON g.course_id = c.course_id " +
-                        "JOIN STUDENTS_SMS s ON s.student_id = g.student_id " +
+                        "JOIN GRADES_SMS a ON a.course_id = c.course_id " +
+                        "JOIN STUDENTS_SMS s ON s.student_id = a.student_id " +
                         "JOIN users_sms u ON u.user_id = s.user_id " +
                         "WHERE u.username = @username;";
                     cmd.CommandText = sql;
