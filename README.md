@@ -25,10 +25,12 @@
 3. Classes
 * The classes section allows users to add, edit, or delete class records. Each class record includes information about the course, such as the name and description, as well as a list of students enrolled in the class and their attendance records.
 
-### TODO
-1. Attendance
+4. Attendance
 * The attendance section allows users to take attendance for each class. Users can mark students as present, absent, or tardy. The system keeps track of attendance records for each student and displays them in the student record.
-2. Dashboard
+
+### TODO
+
+1. Dashboard
 * The dashboard displays an overview of the current academic year, including the total number of students, classes, and teachers. It also displays a summary of today's attendance for each class.
 
 ### Conclusion
