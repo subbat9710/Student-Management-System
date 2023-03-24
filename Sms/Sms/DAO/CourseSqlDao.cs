@@ -170,6 +170,7 @@ namespace Sms.DAO
             catch (Exception e) { Console.WriteLine("Error loading course details: ", e.Message); }
             return result;
         }
+
         private Course CreateCourseFromReader(SqlDataReader reader)
         {
             Course temp = new Course();

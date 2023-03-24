@@ -279,12 +279,39 @@ namespace Sms
                                 else
                                 {
                                     Console.WriteLine();
-                                    GradeStudent();
+                                    Console.Write("1) Enter Student Id: ");
+                                    string studentId = Console.ReadLine();
+                                    Console.Write("3) Grade Student: ");
+                                    string gradeStd = Console.ReadLine();
+                                    Console.Write("4) Assignment Name: ");
+                                    string assignment = Console.ReadLine();
+
+                                    Grades newGrade = new Grades()
+                                    {
+                                        StudentId = int.Parse(studentId),
+                                        CourseId = _newInstructorDao.GettingCourseId(username),
+                                        Grade = int.Parse(gradeStd),
+                                        AssignmentName = assignment
+                                    };
+                                    newGrade = _gradeDao.GetGrade(newGrade);
+                                    Console.WriteLine($"\n*** {newGrade.Grade} assigned ***");
                                 }
                             }
                             else if (instructorInput == "3")
                             {
-                                GetAttendance();
+                                Console.Write("1) Enter Student Id: ");
+                                string studentId = Console.ReadLine();
+                                Console.Write("3) Is Present/Absent: ");
+                                string status = Console.ReadLine();
+                                Attendance getAttendance = new Attendance()
+                                {
+                                    StudentId = int.Parse(studentId),
+                                    CourseId = _newInstructorDao.GettingCourseId(username),
+                                    Date = DateTime.Now,
+                                    Status = status
+                                };
+                                getAttendance = _attendanceDao.GetAttendance(getAttendance);
+                                Console.WriteLine("Attendence Created");
                             }
                             else if (instructorInput == "4")
                             {
@@ -448,27 +475,6 @@ namespace Sms
                 else if (adminInput == "9") { break; }
                 else { Console.WriteLine("Invalid Input!"); }
             }
-        }
-
-        private void GradeStudent()
-        {
-            Console.Write("1) Enter Student Id: ");
-            string studentId = Console.ReadLine();
-            Console.Write("2) Enter Course Id: ");
-            string courseId = Console.ReadLine();
-            Console.Write("3) Grade Student: ");
-            string gradeStd = Console.ReadLine();
-            Console.Write("4) Assignment Name: ");
-            string assignment = Console.ReadLine();
-            Grades newGrade = new Grades()
-            {
-                StudentId = int.Parse(studentId),
-                CourseId = int.Parse(courseId),
-                Grade = int.Parse(gradeStd),
-                AssignmentName = assignment
-            };
-            newGrade = _gradeDao.GetGrade(newGrade);
-            Console.WriteLine($"\n*** {newGrade.Grade} assigned ***");
         }
         private void GetAttendance()
         {

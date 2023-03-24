@@ -97,6 +97,45 @@ namespace Sms.DAO
             catch (Exception e) { Console.WriteLine(e.Message); }
             return result;
         }
+
+        public int GettingCourseId(string username) 
+        {
+            int courseId = 0;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(_connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand cmd = new SqlCommand();
+                    string sql = "SELECT course_id FROM COURSES_SMS c " +
+                        "JOIN INSTRUCTORS_SMS i ON c.instructor_id = i.instructor_id " +
+                        "JOIN USERS_SMS u ON u.user_id = i.user_id WHERE u.username = @username;";
+
+                    cmd.CommandText = sql;
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Connection = connection;
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        courseId = reader.GetInt32(0);
+
+                        if (courseId != 0)
+                        {
+                            Console.WriteLine($" {courseId}");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Not Updated! Check back soon!");
+                        }
+                    }
+                }
+            }
+            catch { }
+            return courseId;
+        }
         private Instructor CreateInstructorFromReader(SqlDataReader reader)
         {
             Instructor instructor = new Instructor();

@@ -10,6 +10,6 @@ namespace Sms.DAO
         Instructor createProfileDetails(Instructor instructor);
         Instructor GetFirstLastName(string username);
         IList<Instructor> GetAllInstructor();
-
+        int GettingCourseId(string username); 
     }
 }
