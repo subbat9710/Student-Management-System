@@ -12,7 +12,7 @@
 * Open the solution file in Visual Studio.
 * Open the SQL Server Management Studio and create a new database.
 * Update the connection string in the App.config file to match your database credentials.
-* Build and run the application.
+* Build and run the application
 ### Features
 * Login/Logout - The system requires users to log in with their credentials before accessing any features. Users can choose to log in as administrators or teachers.
 
