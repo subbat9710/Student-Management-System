@@ -34,4 +34,4 @@
 * The dashboard displays an overview of the current academic year, including the total number of students, classes, and teachers. It also displays a summary of today's attendance for each class.
 
 ### Conclusion
-##### The student management system is a comprehensive solution for managing student data. It allows users to manage student records, attendance, and academic records with ease. The use of .Net, OOP principles, and an MS SQL database ensures the system is scalable, reliable, and secure.</sub> 
+##### The student management system is a comprehensive solution for managing student data. It allows users to manage student records, attendance, and academic records with ease. The use of .Net, OOP principles, MS SQL database ensures the system is scalable, reliable, and secure.</sub> 
