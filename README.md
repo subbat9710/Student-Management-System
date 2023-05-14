@@ -10,7 +10,7 @@
 ### Setup
 * Clone the repository to your local machine.
 * Open the solution file in Visual Studio.
-* Open the SQL Server Management Studio and create a new database.
+* Open the SQL Server Management Studio & create a new database.
 * Update the connection string in the App.config file to match your database credentials.
 * Build and run the application
 ### Features
