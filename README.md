@@ -23,7 +23,7 @@
 * The teachers section allows users to add, edit, or delete teacher records. Each teacher record includes personal information, such as name and email address, as well as a list of classes they teach.
 
 3. Classes
-* The classes section allows users to add, edit, or delete class records. Each class record includes information about the course, such as the name and description, as well as a list of students enrolled in the class and their attendance records.
+* The classes section allows users to add, edit, or delete class records. Each class record includes information about the course, such as the name, and description, as well as a list of students enrolled in the class and their attendance records.
 
 4. Attendance
 * The attendance section allows users to take attendance for each class. Users can mark students as present, absent, or tardy. The system keeps track of attendance records for each student and displays them in the student record.
