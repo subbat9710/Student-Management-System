@@ -11,16 +11,16 @@
 * Clone the repository to your local machine.
 * Open the solution file in Visual Studio.
 * Open the SQL Server Management Studio & create a new database.
-* Update the connection string in the App.config file to match your database credentials.
+* Update the connection string in the App. config file to match your database credentials.
 * Build, and run the application
 ### Features
 * Login/Logout - The system requires users to log in with their credentials before accessing any features. Users can choose to log in as administrators or teachers.
 
 1. Students
-* The students section allows users to add, edit, or delete student records. Each student record includes personal information, such as name, address, and phone number, as well as academic records, such as classes and grades.
+* The student's section allows users to add, edit, or delete student records. Each student record includes personal information, such as name, address, and phone number, as well as academic records, such as classes and grades.
 
 2. Teachers
-* The teachers section allows users to add, edit, or delete teacher records. Each teacher record includes personal information, such as name and email address, as well as a list of classes they teach.
+* The teacher's section allows users to add, edit, or delete teacher records. Each teacher's record includes personal information, such as name and email address, as well as a list of classes they teach.
 
 3. Classes
 * The classes section allows users to add, edit, or delete class records. Each class record includes information about the course, such as the name, and description, as well as a list of students enrolled in the class and their attendance records.
@@ -34,4 +34,4 @@
 * The dashboard displays an overview of the current academic year, including the total number of students, classes, and teachers. It also displays a summary of today's attendance for each class.
 
 ### Conclusion
-##### The student management system is a comprehensive solution for managing student data. It allows users to manage student records, attendance, and academic records with ease. The use of .Net, OOP principles, MS SQL database ensures the system is scalable, reliable, and secure.</sub> 
+##### The student management system is a comprehensive solution for managing student data. It allows users to manage student records, attendance, and academic records with ease. The use of .Net, OOP principles, and MS SQL database ensures the system is scalable, reliable, and secure.</sub> 
